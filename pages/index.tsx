@@ -1,7 +1,12 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { useState } from 'react';
+import DestinationPrompt from '../components/DestinationPrompt';
+import AttractionsPrompt from '../components/AttractionsPrompt';
 
 const Home: NextPage = () => {
+  const [destination, setDestination] = useState<string | null>(null);
+
   return (
     <div>
       <Head>
@@ -13,8 +18,16 @@ const Home: NextPage = () => {
         {/* <link rel='icon' href='/favicon.ico' /> */}
       </Head>
 
+      <header>
+        <h1>Touristify</h1>
+      </header>
+
       <main>
-        <h1></h1>
+        {!destination ? (
+          <DestinationPrompt setDestination={setDestination} />
+        ) : (
+          <AttractionsPrompt />
+        )}
       </main>
 
       <aside></aside>
