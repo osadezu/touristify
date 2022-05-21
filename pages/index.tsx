@@ -26,7 +26,7 @@ const Home: NextPage = () => {
         {!destination ? (
           <DestinationPrompt setDestination={setDestination} />
         ) : (
-          <AttractionsPrompt />
+          <AttractionsPrompt destination={destination} />
         )}
       </main>
 
