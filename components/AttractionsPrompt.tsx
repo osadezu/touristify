@@ -6,21 +6,48 @@ type AppProps = {
 };
 
 export default function AttractionsPrompt({ destination }: AppProps) {
-  const [baseOptions, setBaseOptions] = useState<string[] | null>(null);
+  const [baseAttractions, setBaseAttractions] = useState<string[] | null>(null);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    let mounted = true; // Prevent race condition
+    // Prevent race condition
+    let mounted = true;
     setLoading(true);
 
     axios
-      .get(`api/attractions`, { params: { destination: destination } })
-      .then((response) => {})
+      .get(`api/destinations/${destination}`)
+      .then((response) => {
+        // Do not attempt to update state if unmounted
+        if (!mounted) return;
+        console.log(response);
+        setBaseAttractions(response.data.baseAttractions);
+      })
       .catch(console.error);
+
+    setLoading(false);
+    return () => {
+      mounted = false;
+    };
   }, [destination]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+  }
+
+  if (isLoading) {
+    return (
+      <div>
+        <h2>One sec, jogging my memory!</h2>
+      </div>
+    );
+  }
+
+  if (!baseAttractions?.length) {
+    return (
+      <div>
+        <h2>Apologies! I can&quot;t think of anything right now.</h2>
+      </div>
+    );
   }
 
   return (
@@ -36,7 +63,11 @@ export default function AttractionsPrompt({ destination }: AppProps) {
         are amazing!&rdquo;
       </p>
       <form onSubmit={handleSubmit}>
-        {/* Display base attractions form */}
+        <ul>
+          {baseAttractions?.map((attraction, i) => (
+            <li key={i}>{attraction}</li>
+          ))}
+        </ul>
         <input type='submit' value='Show me my recommendations!' />
       </form>
     </div>
