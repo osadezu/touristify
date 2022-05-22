@@ -1,13 +1,40 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import axios from 'axios';
+
+import { Attraction } from '../shared/types';
+import BaseAttraction from '../components/BaseAttraction';
 
 type AppProps = {
   destination: string;
 };
 
 export default function AttractionsPrompt({ destination }: AppProps) {
-  const [baseAttractions, setBaseAttractions] = useState<string[] | null>(null);
+  const [baseAttractions, setBaseAttractions] = useState<Attraction[]>([]);
   const [isLoading, setLoading] = useState(false);
+
+  function updateAttraction(index: number, attraction: Attraction) {
+    const newAttractions = [...baseAttractions];
+    newAttractions[index] = attraction;
+    setBaseAttractions(newAttractions);
+  }
+
+  function handlePreference(
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ): void {
+    const newAttraction = { ...baseAttractions[index] };
+    newAttraction.preference = event.target.value;
+    updateAttraction(index, newAttraction);
+  }
+
+  function handleDislike(
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ): void {
+    const newAttraction = { ...baseAttractions[index] };
+    newAttraction.dislike = event.target.checked;
+    updateAttraction(index, newAttraction);
+  }
 
   useEffect(() => {
     // Prevent race condition
@@ -20,7 +47,14 @@ export default function AttractionsPrompt({ destination }: AppProps) {
         // Do not attempt to update state if unmounted
         if (!mounted) return;
         console.log(response);
-        setBaseAttractions(response.data.baseAttractions);
+        const attractions = response.data.baseAttractions.map(
+          (description: string): Attraction => ({
+            description: description,
+            preference: null,
+            dislike: false,
+          })
+        );
+        setBaseAttractions(attractions);
         setLoading(false);
       })
       .catch(console.error);
@@ -37,7 +71,8 @@ export default function AttractionsPrompt({ destination }: AppProps) {
   if (isLoading) {
     return (
       <div>
-        <h2>One sec, jogging my memory!</h2>
+        <h2>{destination}...</h2>
+        <p>One sec, jogging my memory!</p>
       </div>
     );
   }
@@ -45,7 +80,7 @@ export default function AttractionsPrompt({ destination }: AppProps) {
   if (!baseAttractions?.length) {
     return (
       <div>
-        <h2>Apologies! I can&quot;t think of anything right now.</h2>
+        <h2>Apologies! I can&apos;t think of anything right now.</h2>
       </div>
     );
   }
@@ -67,7 +102,13 @@ export default function AttractionsPrompt({ destination }: AppProps) {
       <form onSubmit={handleSubmit}>
         <ul>
           {baseAttractions?.map((attraction, i) => (
-            <li key={i}>{attraction}</li>
+            <BaseAttraction
+              key={i}
+              index={i}
+              attraction={attraction}
+              handlePreference={handlePreference}
+              handleDislike={handleDislike}
+            />
           ))}
         </ul>
         <input type='submit' value='Show me my recommendations!' />
