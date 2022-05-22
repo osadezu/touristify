@@ -21,10 +21,10 @@ export default function AttractionsPrompt({ destination }: AppProps) {
         if (!mounted) return;
         console.log(response);
         setBaseAttractions(response.data.baseAttractions);
+        setLoading(false);
       })
       .catch(console.error);
 
-    setLoading(false);
     return () => {
       mounted = false;
     };
@@ -58,9 +58,11 @@ export default function AttractionsPrompt({ destination }: AppProps) {
         too easy!
       </p>
       <p>
-        Can you tell me if you like any of these options and why? You can type
-        anything like &ldquo;I really enjoy boat rides&rdquo; or &ldquo;Museums
-        are amazing!&rdquo;
+        Can you tell me if you like any of these options and why?
+        <br />
+        You can type anything like{' '}
+        <em>&ldquo;I really enjoy boat rides&rdquo;</em> or{' '}
+        <em>&ldquo;Museums are amazing!&rdquo;</em>
       </p>
       <form onSubmit={handleSubmit}>
         <ul>
