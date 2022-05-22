@@ -6,16 +6,69 @@ import BaseAttraction from '../components/BaseAttraction';
 
 type AppProps = {
   destination: string;
+  baseAttractions: Attraction[];
+  setBaseAttractions: Dispatch<SetStateAction<Attraction[]>>;
+  setHasPreferences: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function AttractionsPrompt({ destination }: AppProps) {
-  const [baseAttractions, setBaseAttractions] = useState<Attraction[]>([]);
+export default function AttractionsPrompt({
+  destination,
+  baseAttractions,
+  setBaseAttractions,
+  setHasPreferences,
+}: AppProps) {
   const [isLoading, setLoading] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+
+  useEffect(() => {
+    // Prevent race condition
+    let mounted = true;
+    setLoading(true);
+
+    axios
+      .get(`api/attractions/${destination}`)
+      .then((response) => {
+        // Do not attempt to update state if unmounted
+        if (!mounted) return;
+        console.log(response);
+        const attractions = response.data.results.map(
+          (description: string): Attraction => ({
+            description: description,
+            preference: null,
+            dislike: false,
+          })
+        );
+        setBaseAttractions(attractions);
+        setLoading(false);
+      })
+      .catch(console.error);
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (isFilled) setHasPreferences(true);
+  }
 
   function updateAttraction(index: number, attraction: Attraction) {
     const newAttractions = [...baseAttractions];
     newAttractions[index] = attraction;
     setBaseAttractions(newAttractions);
+
+    // Update isFilled state
+    let complete = false;
+    for (const attraction of newAttractions) {
+      if (attraction.preference || attraction.dislike) {
+        complete = true;
+      } else {
+        complete = false;
+        break;
+      }
+    }
+    setIsFilled(complete);
   }
 
   function handlePreference(
@@ -34,38 +87,6 @@ export default function AttractionsPrompt({ destination }: AppProps) {
     const newAttraction = { ...baseAttractions[index] };
     newAttraction.dislike = event.target.checked;
     updateAttraction(index, newAttraction);
-  }
-
-  useEffect(() => {
-    // Prevent race condition
-    let mounted = true;
-    setLoading(true);
-
-    axios
-      .get(`api/destinations/${destination}`)
-      .then((response) => {
-        // Do not attempt to update state if unmounted
-        if (!mounted) return;
-        console.log(response);
-        const attractions = response.data.baseAttractions.map(
-          (description: string): Attraction => ({
-            description: description,
-            preference: null,
-            dislike: false,
-          })
-        );
-        setBaseAttractions(attractions);
-        setLoading(false);
-      })
-      .catch(console.error);
-
-    return () => {
-      mounted = false;
-    };
-  }, [destination]);
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
   }
 
   if (isLoading) {
@@ -111,7 +132,11 @@ export default function AttractionsPrompt({ destination }: AppProps) {
             />
           ))}
         </ul>
-        <input type='submit' value='Show me my recommendations!' />
+        <input
+          type='submit'
+          disabled={!isFilled}
+          value='Show me my recommendations!'
+        />
       </form>
     </div>
   );
