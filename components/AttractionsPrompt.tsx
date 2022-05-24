@@ -109,14 +109,10 @@ export default function AttractionsPrompt({
   return (
     <div>
       <h2>{destination}, awesome!</h2>
+      <p>These are some common attractions at your destination.</p>
       <p>
-        These are some common attractions at your destination, but that would be
-        too easy!
-      </p>
-      <p>
-        Can you tell me if you like any of these options and why?
-        <br />
-        You can type anything like{' '}
+        But that would be too easy! Can you tell me if you like any of these
+        options and why? You can type anything like{' '}
         <em>&ldquo;I really enjoy boat rides&rdquo;</em> or{' '}
         <em>&ldquo;Museums are amazing!&rdquo;</em>
       </p>
