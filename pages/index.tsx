@@ -41,7 +41,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div>
+    <div className='app'>
       <Head>
         <title>Touristify</title>
         <meta
@@ -59,7 +59,18 @@ const Home: NextPage = () => {
 
       <aside></aside>
 
-      <footer></footer>
+      <footer>
+        <p className='footer-text'>
+          Please note that extended space travel might bring you back to the
+          future –{' '}
+          <a
+            href='https://github.com/osadezu/touristify'
+            target='_blank'
+            rel='noopener noreferrer'>
+            Visit GitHub Repo
+          </a>
+        </p>
+      </footer>
     </div>
   );
 };
