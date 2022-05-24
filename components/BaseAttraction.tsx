@@ -21,7 +21,7 @@ function baseAttraction({
 }: AppProps) {
   return (
     <li>
-      <fieldset>
+      <fieldset className='preference'>
         <legend>{attraction.description}</legend>
         <label htmlFor={`preference-${index}`}>What you like:</label>
         <input
@@ -29,12 +29,12 @@ function baseAttraction({
           id={`preference-${index}`}
           onChange={(e) => handlePreference(e, index)}
         />
-        <input
+        {/* <input
           type='checkbox'
           id={`dislike-${index}`}
           onChange={(e) => handleDislike(e, index)}
         />
-        <label htmlFor={`dislike-${index}`}>I don&apos;t like this</label>
+        <label htmlFor={`dislike-${index}`}>I don&apos;t like this</label> */}
       </fieldset>
     </li>
   );
