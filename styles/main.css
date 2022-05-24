@@ -1,0 +1,144 @@
+:root {
+  --color-dark-bg: #293462;
+  --color-light-bg: white;
+  --color-accent: #F24C4C;
+  --color-secondary: #EC9B3B;
+  --color-contrast: #F7D716;
+
+  --sp-top-margin: 3rem;
+  --sp-material-padding: 2rem;
+  --sp-material-interactive: 2.5rem;
+  --sp-content-spacing: 0.75rem;
+  --sp-inline-spacing: 0.35rem;
+
+  --material-radius: calc(var(--sp-material-padding)/3);
+
+  --font-main-sans: 'Baloo 2', sans-serif;
+}
+
+body {
+  height: 100vh;
+  font-family: var(--font-main-sans);
+  background-color: var(--color-dark-bg);
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+header {
+  margin-bottom: var(--sp-top-margin);
+  padding: calc(var(--sp-content-spacing)) var(--sp-top-margin);
+  width: 100%;
+}
+
+main, aside {
+  flex-grow: 1;
+}
+
+main > div,
+aside > div {
+  width: 600px;
+  margin-bottom: var(--sp-top-margin);
+  padding: var(--sp-material-padding);
+  border-radius: var(--material-radius);
+
+  color: black;
+  background-color: var(--color-light-bg);
+  font-size: larger;
+}
+
+h1 {
+  margin: 0;
+  font-size: 3em;
+  font-weight: 700;
+  color: var(--color-contrast);
+}
+
+h2 {
+  margin-bottom: var(--sp-content-spacing);
+  font-size: 2em;
+}
+
+p {
+  margin-bottom: var(--sp-content-spacing);
+  line-height: 1.2;
+}
+
+form {
+  display: flex;
+  flex-flow: column;
+  gap: var(--sp-content-spacing);
+}
+
+input, button {
+  height: var(--sp-material-interactive);
+  padding-left: calc(var(--sp-material-interactive)/2);
+  padding-right: calc(var(--sp-material-interactive)/2);
+  border: 0px;
+  border-radius: calc(var(--sp-material-interactive)/2);
+
+  font-size: 1.2rem;
+}
+
+input[type=submit], input[type=button] {
+  font-family: var(--font-main-sans);
+}
+
+input[type=text] {
+  font-family: 'Caveat', cursive;
+  border: 1px solid var(--color-dark-bg) 
+}
+
+fieldset {
+  margin: 0;
+  margin-bottom: var(--sp-content-spacing);
+  padding: 0;
+  border: none;
+  display: flex;
+  align-items: baseline;
+}
+
+legend {
+  padding: 0;
+  font-weight: bold;
+}
+
+.preference > label {
+  margin-right: var(--sp-inline-spacing);
+}
+
+.preference > input[type=text] {
+  flex-grow: 1;
+}
+
+a {
+  font-weight: bold;
+  transition: all 0.3s ease-out;
+}
+
+a:hover {
+  color: var(--color-accent);
+  text-shadow: 0.04em 0.04em var(--color-dark-bg);
+}
+
+footer {
+  padding: calc(var(--sp-content-spacing)) var(--sp-top-margin);
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+
+  font-size: 1.2rem;
+  background-color: var(--color-contrast);
+  color: var(--color-dark-bg);
+}
+
+footer * {
+  margin: 0;
+}
