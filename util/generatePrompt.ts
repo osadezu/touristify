@@ -1,11 +1,17 @@
 export default function generatePrompt(
   destination: string,
-  preferences?: string[]
+  preferences?: string | string[]
 ): string {
   if (!preferences) {
     return `List five activities for someone who is visiting ${destination} on holiday.\n\n1.`;
   } else {
-    const preferenceString = preferences.map((item) => `- ${item}\n`).join('');
+    let preferenceString;
+    if (Array.isArray(preferences)) {
+      preferenceString = preferences.map((item) => `- ${item}\n`).join('');
+    } else {
+      preferenceString = `- ${preferences}\n`;
+    }
+
     let prompt = '';
 
     const nycRegex = /(New York City|New York|NYC|NY)/i;
@@ -22,7 +28,7 @@ export default function generatePrompt(
       prompt +=
         `These are some personal preferences for someone who is visiting Mexico City on holiday:\n- I like restaurants\n- I like parks\n\n` +
         `Based on these preferences, list five activities for a Mexico City holiday and describe why they are enjoyable:\n\n` +
-        `1. Eat in a restaurant, sampling the traditional Mexican food is sure to be enjoyable. \n2. Go for a walk in one of the city's many beautiful parks like Xochimilco or Chapultepec Park.\n3. See a play at Teatro de la National and listen to live music at Zocalo Rotisserie while enjoying an ice cold drink! \n4. Shop until you drop at some of Mexico City's luxury malls like Plaza Garibaldi or San Angel Centro, there are plenty of stores to choose from! \n5. Going on themed tours such as A Day with the Aztecs, Wine Tasting & Cooking Class etc., which will give you an insight into history and culture behind these activities is always fun too!`;
+        `1. Eat in a restaurant, sampling the traditional Mexican food is sure to be enjoyable. \n2. Go for a walk in one of the city's many beautiful parks like Xochimilco or Chapultepec Park.\n3. See a play at Teatro de la National and listen to live music at Zocalo Rotisserie while enjoying an ice cold drink! \n4. Shop until you drop at some of Mexico City's luxury malls like Plaza Garibaldi or San Angel Centro, there are plenty of stores to choose from! \n5. Going on themed tours such as A Day with the Aztecs, Wine Tasting & Cooking Class etc., which will give you an insight into history and culture behind these activities is always fun too!\n\n`;
     }
     prompt +=
       `These are some personal preferences for someone who is visiting ${destination} on holiday:\n` +

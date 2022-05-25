@@ -11,6 +11,7 @@ const Home: NextPage = () => {
   const [destination, setDestination] = useState<string | null>(null);
   const [baseAttractions, setBaseAttractions] = useState<Attraction[]>([]);
   const [hasPreferences, setHasPreferences] = useState<boolean>(false);
+  const [results, setResults] = useState<string[] | null>(null);
 
   function doNewDestination() {
     // Add current destination to history
@@ -22,7 +23,11 @@ const Home: NextPage = () => {
       return (
         <ResultsPrompt
           destination={destination}
-          baseAttractions={baseAttractions}
+          preferences={baseAttractions
+            .filter((attraction) => attraction.preference?.length)
+            .map((attraction) => attraction.preference as string)}
+          results={results}
+          setResults={setResults}
           doNewDestination={doNewDestination}
         />
       );

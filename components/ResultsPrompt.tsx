@@ -6,15 +6,13 @@ import { Attraction } from '../shared/types';
 
 type AppProps = {
   destination: string;
-  baseAttractions: Attraction[];
+  preferences: string[];
+  results: string[] | null;
+  setResults: Dispatch<SetStateAction<string[] | null>>;
   doNewDestination: () => void;
 };
 
-function Results({
-  destination,
-  baseAttractions: preferences,
-  doNewDestination,
-}: AppProps) {
+function Results({ destination, preferences, doNewDestination }: AppProps) {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -39,7 +37,6 @@ function Results({
           (description: string): Attraction => ({
             description: description,
             preference: null,
-            dislike: false,
           })
         );
         // setBaseAttractions(attractions);

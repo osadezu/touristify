@@ -18,22 +18,16 @@ export default async function destinationHandler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  // console.log(req.query);
+  console.log('[destination].ts:21', req.query);
 
   const destination = req.query.destination as string;
+  let preferences = req.query.preferences;
   let request;
-  let preferences = null;
-
-  if ('preferences[]' in req.query) {
-    preferences = req.query['preferences[]'];
-    console.log(preferences);
-  }
 
   if (preferences?.length) {
     // Requesting improved attractions
-    console.log(preferences);
     request = {
-      prompt: generatePrompt(destination),
+      prompt: generatePrompt(destination, preferences),
       temperature: 1,
       max_tokens: 1000,
       frequency_penalty: 2,
@@ -49,7 +43,7 @@ export default async function destinationHandler(
     };
   }
 
-  console.log(request);
+  console.log('[destination].ts:47', request);
 
   try {
     const completion = await openai.createCompletion('text-curie-001', request);
