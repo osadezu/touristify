@@ -8,7 +8,7 @@
   --sp-top-margin: 3rem;
   --sp-material-padding: 2rem;
   --sp-material-interactive: 2.5rem;
-  --sp-content-spacing: 0.75rem;
+  --sp-content-spacing: 1.25rem;
   --sp-inline-spacing: 0.35rem;
 
   --material-radius: calc(var(--sp-material-padding)/3);
