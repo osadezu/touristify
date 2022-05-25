@@ -7,18 +7,9 @@ type AppProps = {
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => void;
-  handleDislike: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => void;
 };
 
-function baseAttraction({
-  index,
-  attraction,
-  handlePreference,
-  handleDislike,
-}: AppProps) {
+function baseAttraction({ index, attraction, handlePreference }: AppProps) {
   return (
     <li>
       <fieldset className='preference'>
@@ -29,12 +20,6 @@ function baseAttraction({
           id={`preference-${index}`}
           onChange={(e) => handlePreference(e, index)}
         />
-        {/* <input
-          type='checkbox'
-          id={`dislike-${index}`}
-          onChange={(e) => handleDislike(e, index)}
-        />
-        <label htmlFor={`dislike-${index}`}>I don&apos;t like this</label> */}
       </fieldset>
     </li>
   );

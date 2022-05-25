@@ -35,7 +35,6 @@ export default function AttractionsPrompt({
           (description: string): Attraction => ({
             description: description,
             preference: null,
-            dislike: false,
           })
         );
         setBaseAttractions(attractions);
@@ -59,15 +58,7 @@ export default function AttractionsPrompt({
     setBaseAttractions(newAttractions);
 
     // Update isFilled state
-    let complete = false;
-    for (const attraction of newAttractions) {
-      if (attraction.preference || attraction.dislike) {
-        complete = true;
-      } else {
-        complete = false;
-        break;
-      }
-    }
+    const complete = newAttractions.some((attraction) => attraction.preference);
     setIsFilled(complete);
   }
 
@@ -77,15 +68,6 @@ export default function AttractionsPrompt({
   ): void {
     const newAttraction = { ...baseAttractions[index] };
     newAttraction.preference = event.target.value;
-    updateAttraction(index, newAttraction);
-  }
-
-  function handleDislike(
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ): void {
-    const newAttraction = { ...baseAttractions[index] };
-    newAttraction.dislike = event.target.checked;
     updateAttraction(index, newAttraction);
   }
 
@@ -124,7 +106,6 @@ export default function AttractionsPrompt({
               index={i}
               attraction={attraction}
               handlePreference={handlePreference}
-              handleDislike={handleDislike}
             />
           ))}
         </ul>
