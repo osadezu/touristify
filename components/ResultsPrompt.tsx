@@ -2,8 +2,6 @@ import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import axios from 'axios';
 import { stringify } from 'qs';
 
-import { Attraction } from '../shared/types';
-
 type AppProps = {
   destination: string;
   preferences: string[];
@@ -12,7 +10,13 @@ type AppProps = {
   doNewDestination: () => void;
 };
 
-function Results({ destination, preferences, doNewDestination }: AppProps) {
+function Results({
+  destination,
+  preferences,
+  results,
+  setResults,
+  doNewDestination,
+}: AppProps) {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -32,14 +36,8 @@ function Results({ destination, preferences, doNewDestination }: AppProps) {
       .then((response) => {
         // Do not attempt to update state if unmounted
         if (!mounted) return;
-        console.log(response);
-        const attractions = response.data.baseAttractions.map(
-          (description: string): Attraction => ({
-            description: description,
-            preference: null,
-          })
-        );
-        // setBaseAttractions(attractions);
+        console.log(response.data);
+        setResults(response.data.results);
         setLoading(false);
       })
       .catch(console.error);
@@ -54,7 +52,34 @@ function Results({ destination, preferences, doNewDestination }: AppProps) {
     doNewDestination();
   }
 
-  return <div></div>;
+  if (isLoading) {
+    return (
+      <div>
+        <h2>{destination}...</h2>
+        <p>One sec, I&apos;m sure I&apos;ve got something for you!</p>
+      </div>
+    );
+  }
+
+  if (!results?.length) {
+    return (
+      <div>
+        <h2>Apologies! I can&apos;t think of anything right now.</h2>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h2>{destination}, here we go!</h2>
+      <ul>
+        {results.map((description, i) => (
+          <li key={i}>{description}</li>
+        ))}
+      </ul>
+      <p>Not so bad for a robot right?</p>
+    </div>
+  );
 }
 
 export default Results;

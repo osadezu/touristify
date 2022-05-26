@@ -30,7 +30,7 @@ export default function AttractionsPrompt({
       .then((response) => {
         // Do not attempt to update state if unmounted
         if (!mounted) return;
-        console.log(response);
+        console.log(response.data);
         const attractions = response.data.results.map(
           (description: string): Attraction => ({
             description: description,
