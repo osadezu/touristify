@@ -32,6 +32,7 @@ export default async function destinationHandler(
       max_tokens: 1000,
       frequency_penalty: 2,
       presence_penalty: 2,
+      echo: true,
     };
   } else {
     // Initial prompt for base attractions
